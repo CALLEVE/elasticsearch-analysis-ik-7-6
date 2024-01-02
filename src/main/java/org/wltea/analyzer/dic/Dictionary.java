@@ -171,6 +171,20 @@ public class Dictionary {
 		}
 	}
 
+	private void loadCustomExtStopWord(){
+		new Thread(()->{
+			while (true){
+				try {
+					CustomDictLoader.getInstance().loadMySqlExtWords();
+					CustomDictLoader.getInstance().loadMySqlExtWords();
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+
 	private void walkFileTree(List<String> files, Path path) {
 		if (Files.isRegularFile(path)) {
 			files.add(path.toString());
@@ -282,7 +296,7 @@ public class Dictionary {
 		return remoteExtStopWordDictFiles;
 	}
 
-	private String getDictRoot() {
+	public String getDictRoot() {
 		return conf_dir.toAbsolutePath().toString();
 	}
 
@@ -312,6 +326,24 @@ public class Dictionary {
 				if (word != null) {
 					// 批量加载词条到主内存词典中
 					singleton._MainDict.fillSegment(word.trim().toCharArray());
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * 批量加载新Stop-Word
+	 *
+	 * @param words
+	 *            Collection<String>词条列表
+	 */
+	public void addStopWords(Collection<String> words) {
+		if (words != null) {
+			for (String word : words) {
+				if (word != null) {
+					// 批量加载词条到主内存词典中
+					singleton._StopWords.fillSegment(word.trim().toCharArray());
 				}
 			}
 		}
