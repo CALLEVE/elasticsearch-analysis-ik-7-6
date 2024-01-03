@@ -55,8 +55,9 @@ public class CustomDictLoader {
             this.url = mysqlConfig.getProperty("jdbc.url");
             this.username = mysqlConfig.getProperty("jdbc.username");
             this.password = mysqlConfig.getProperty("jdbc.password");
+            logger.error("url:{}, username:{}, password:{}", url, username, password);
         } catch (Exception e) {
-            throw new IllegalStateException("记载mysql数据配置错误");
+            throw new IllegalStateException("加载mysql数据配置错误");
         }
 
         try {
